@@ -2,7 +2,7 @@ from os.path import join
 import os
 from asammdf import MDF
 import pandas as pd
-from fuzzywuzzy import fuzz, process
+from fuzzywuzzy import process
 
 
 def csv_reader():

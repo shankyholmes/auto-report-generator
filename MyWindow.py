@@ -3,7 +3,6 @@ import os
 import pandas as pd
 import MDFFileHandler as mdf
 import ReportGenerator as rp
-from wx import ColourData
 
 
 def MyFrame(title):
