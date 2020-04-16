@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0fab90d9-27a6-4d41-bf5a-68d2e8218658}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>MDFFileHandler.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>CondaEnv|CondaEnv|MachineLearning</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="EtCtl Rev08\logo.png" />
+    <Content Include="EtCtl Rev08\mahindralogo.png" />
+    <Content Include="Map Gen Code.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EtCtl Rev08\i_var.py" />
+    <Compile Include="EtCtl Rev08\regen_csv.py" />
+    <Compile Include="EtCtl Rev08\rf_main.py" />
+    <Compile Include="MDFFileHandler.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EtCtl Rev08" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|MachineLearning" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
