@@ -11,11 +11,13 @@ def csv_reader():
     csv_df = csv_df['to_keep'].tolist()
     return csv_df
 
+
 def dat_reader(fileDir):
     file = fileDir
     #file = 'D:\Designing\Programming\PyCharm\MachineLearning\Test.dat'
     mdf_df = MDF(file)
     return mdf_df
+
 
 def filtered_data(fileDir):
     csvLST = csv_reader()
@@ -30,5 +32,4 @@ def filtered_data(fileDir):
     df = df.transpose()
     return df
 
-#data = filtered_data()
 

@@ -1,6 +1,6 @@
 import wx
 import os
-import pandas as pd
+# import pandas as pd
 import MDFFileHandler as mdf
 import ReportGenerator as rp
 
