@@ -2,7 +2,7 @@ import wx
 import os
 # import pandas as pd
 import MDFFileHandler as mdf
-import ReportGenerator as rp
+from ReportGenerator import reportGen
 
 
 def MyFrame(title):
@@ -45,7 +45,8 @@ def ProcessDatFile(event):
 
 def GenerateReport(event):
     try:
-        rp.generate(datafiltered)
+        rp = reportGen(datafiltered, 'IQR')
+        rp.pptGenerator()
         print('Successful!')
     except:
         print('Report gen unsuccessful')
@@ -56,3 +57,5 @@ def GenerateReport(event):
 app = wx.App(False)
 frame = MyFrame('Auto Report Gen')
 app.MainLoop()
+
+

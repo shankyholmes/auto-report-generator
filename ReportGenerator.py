@@ -1,11 +1,13 @@
 from datetime import date
-import pandas as pd
+# import pandas as pd
 import os
 import numpy as np
 from pptx import Presentation
 import Plots as plots
 from fuzzywuzzy import process
 from scipy import stats
+
+
 # import seaborn as sns
 
 
@@ -14,7 +16,6 @@ class reportGen():
     def __init__(self, df, treatment_type = 'IQR'):
         self.df = self.outlierTreatmentIQR(df, type = treatment_type)
         self.dirname = os.path.dirname(__file__)
-    
     
     def outlierTreatmentIQR(self, df, type):
         
@@ -29,22 +30,23 @@ class reportGen():
         # ZSCORE BASED OUTLIER TREATMENT
         if type == 'Zscore':
             z = np.abs(stats.zscore(df))
-            threshold = 1
+            threshold = 2
             df_out = df[(z < threshold).all(axis = 1)]
             return df_out
     
-    
-    def pptGenerator(self, template):
+    def pptGenerator(self):
         df1 = self.df
+        template = os.path.join(self.dirname, 'template.pptx')
+        
         
         # DEFINE CONSTANTS
         TITLE_AND_SUBTITLE = 0
         CONTENT_SLIDE_1 = 1
         CONTENT_SLIDE_2 = 2
-
+        
         # INITIALIZE PRESENTATION
         prs = Presentation(template)
-
+        
         # LAYOUTS FOR SLIDES
         title_slide_layout = prs.slide_layouts[TITLE_AND_SUBTITLE]
         content_slide_layout_1 = prs.slide_layouts[CONTENT_SLIDE_1]
@@ -56,10 +58,10 @@ class reportGen():
         slide.placeholders[1].text = 'Generated on {:%m-%d-%Y}'.format(date.today())
         
         # ADD CONTENT
-        
-        #ADD JOINTPLOT FOR QSET
-        slide = prs.slides.add_slide(content_slide_layout_2)
 
+        # ADD JOINTPLOT FOR QSET
+        slide = prs.slides.add_slide(content_slide_layout_2)
+        
         # extracting label names
         QSET = process.extractOne('InjCtl_qSetUnBal', df1.columns)[0]
         SPEED = process.extractOne('Epm_nEng', df1.columns)[0]
@@ -67,18 +69,17 @@ class reportGen():
         # top left
         slide.placeholders[22].insert_picture('scatterplot.png')
         slide.placeholders[16].text = '1'
-
+        
         # top right
         plots.jointplot(df1[SPEED], df1[QSET])
         slide.placeholders[23].insert_picture('jointplot.png')
         slide.placeholders[17].text = 'Zone mapping of the data w.r.t Qset and Speed'
-
+        
         # bottom left
         # scatter for qset and speed
         # plots.scatterplot(df1[SPEED], df1[QSET])
         slide.placeholders[24].insert_picture('scatterplot.png')
         slide.placeholders[20].text = 'Qset and Speed scatter'
-
         
         # #ADD OTHER PLOTS
         # for col in df1.columns:
@@ -107,19 +108,13 @@ class reportGen():
         # plots.jointplot(plots, df1[SPEED], df1[QSET])
         # slide.placeholders[25].insert_picture('jointplot.png')
         # slide.placeholders[21].text = 'Jointplot for Qset and Speed'
-            
-            
-            
-            
-        
         
         # for shape in slide.placeholders:
         #     print('%d %s' % (shape.placeholder_format.idx, shape.name))
+        
+        prs.save('Report.pptx')
 
-        prs.save('test.pptx')
 
-
-df = pd.read_csv('D:\Designing\Programming\PyCharm\MachineLearning\sortedList.csv', index_col = 0)
-
-ppt = reportGen(df, 'IQR')
-ppt.pptGenerator('D:\Designing\Programming\PyCharm\MachineLearning/template.pptx')
+# df = pd.read_csv('D:\Designing\Programming\PyCharm\MachineLearning\sortedList.csv', index_col = 0)
+#
+# ppt = reportGen(df, 'IQR').pptGenerator()
