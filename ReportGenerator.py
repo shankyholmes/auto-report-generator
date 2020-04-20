@@ -1,21 +1,21 @@
 from datetime import date
-# import pandas as pd
 import os
 import numpy as np
 from pptx import Presentation
 import Plots as plots
 from fuzzywuzzy import process
 from scipy import stats
-
+import pywin.
 
 # import seaborn as sns
 
 
 class reportGen():
     
-    def __init__(self, df, treatment_type = 'IQR'):
+    def __init__(self, df, treatment_type = 'IQR', savelocation = os.path.dirname(__file__)):
         self.df = self.outlierTreatmentIQR(df, type = treatment_type)
         self.dirname = os.path.dirname(__file__)
+        self.savelocation =savelocation
     
     def outlierTreatmentIQR(self, df, type):
         
@@ -67,17 +67,18 @@ class reportGen():
         SPEED = process.extractOne('Epm_nEng', df1.columns)[0]
         
         # top left
-        slide.placeholders[22].insert_picture('scatterplot.png')
-        slide.placeholders[16].text = '1'
+        #plots.distplot(df1[SPEED])
+        slide.placeholders[22].insert_picture('distplot.png')
+        slide.placeholders[16].text = 'Qset Distribution plot :'
         
         # top right
-        plots.jointplot(df1[SPEED], df1[QSET])
+        #plots.jointplot(df1[SPEED], df1[QSET])
         slide.placeholders[23].insert_picture('jointplot.png')
-        slide.placeholders[17].text = 'Zone mapping of the data w.r.t Qset and Speed'
+        slide.placeholders[17].text = 'Zone mapping of the data w.r.t Qset and Speed :'
         
         # bottom left
         # scatter for qset and speed
-        # plots.scatterplot(df1[SPEED], df1[QSET])
+        #plots.scatterplot(df1[SPEED], df1[QSET])
         slide.placeholders[24].insert_picture('scatterplot.png')
         slide.placeholders[20].text = 'Qset and Speed scatter'
         
@@ -113,8 +114,22 @@ class reportGen():
         #     print('%d %s' % (shape.placeholder_format.idx, shape.name))
         
         prs.save('Report.pptx')
+        self.PPTtoPDF('Report.pptx', self.savelocation)
 
+    def PPTtoPDF(inputFileName, outputFileName, formatType = 32):
+        powerpoint = win32com.client.DispatchEx("Powerpoint.Application")
+        powerpoint.Visible = 1
 
+        if outputFileName[-3:] != 'pdf':
+            outputFileName = outputFileName + ".pdf"
+        deck = powerpoint.Presentations.Open(inputFileName)
+        deck.SaveAs(outputFileName, formatType)  # formatType = 32 for ppt to pdf
+        deck.Close()
+        powerpoint.Quit()
+
+            
+            
+        
 # df = pd.read_csv('D:\Designing\Programming\PyCharm\MachineLearning\sortedList.csv', index_col = 0)
 #
 # ppt = reportGen(df, 'IQR').pptGenerator()

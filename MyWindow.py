@@ -7,8 +7,8 @@ from ReportGenerator import reportGen
 
 def MyFrame(title):
     f = wx.Frame(None, title = title, size = (320, 150))
-    mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-    grid = wx.GridBagSizer(hgap = 10, vgap = 10)
+    # mainSizer = wx.BoxSizer(wx.HORIZONTAL)
+    # grid = wx.GridBagSizer(hgap = 10, vgap = 10)
     selDatFile = wx.Button(f, id = 1, label = 'Select .dat', name = 'Select', pos = (10, 10))
     processDatFile = wx.Button(f, id = 2, label = 'Process File', name = 'Process', pos = (200, 10))
     genReport = wx.Button(f, id = 3, label = 'Gen report', name = 'Report', pos = (105, 60))
@@ -55,7 +55,7 @@ def GenerateReport(event):
 
 
 app = wx.App(False)
-frame = MyFrame('Auto Report Gen')
+frame = MyFrame('Report Generator')
 app.MainLoop()
 
 
