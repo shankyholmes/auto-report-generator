@@ -2,4 +2,6 @@ to_keep
 InjCtl_qSetUnBal
 Epm_nEng
 APP_r
-EnvP_p
+InjCrv_phiMI1Des
+EGRVlv_rAct
+Rail_pSetPoint
