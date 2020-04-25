@@ -78,19 +78,19 @@ class MyFrame(wx.Frame):
     
     def GenerateReport(self, event):  # wxGlade: MyFrame.<event_handler>
         savelocation = wx.SaveFileSelector('Report', '.pptx', 'Report.pptx')
-        print(savelocation)
+        # print(savelocation)
         try:
             global datafiltered
             datafiltered = mdf.filtered_data(fileDir)
             datafiltered.to_csv(os.path.join(dirname, 'sortedList.csv'))
-            print(dirname)
+            # print(dirname)
         except:
             print('Select correct file')
         
         try:
             rp = reportGen(datafiltered, 'IQR', savelocation)
             rp.pptGenerator()
-            # print('Successful!')
+            print('Successful!')
         except:
             print('Report gen unsuccessful')
         finally:
