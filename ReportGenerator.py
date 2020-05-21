@@ -8,7 +8,6 @@ from scipy import stats
 import pandas as pd
 # import seaborn as sns
 
-
 class reportGen():
     
     def __init__(self, df, treatment_type = 'IQR', savelocation = os.path.join(os.path.dirname(__file__), 'Report.pptx')):
@@ -85,7 +84,7 @@ class reportGen():
         # top right
         plots.jointplot(df1[SPEED], df1[QSET])
         slide.placeholders[23].insert_picture('jointplot.png')
-        slide.placeholders[17].text = f'Zone mapping of the data w.r.t {QSET} and {SPEED} '
+        slide.placeholders[17].text = f'Zone mapping of the data'
         
         # bottom left
         # scatter for qset and speed
@@ -99,7 +98,7 @@ class reportGen():
 
             plots.distplot(df1[col])
             plots.scatterplot(df1[SPEED], df1[col])
-            plots.lineplot(df_truncated.index, df_truncated[col])
+            plots.lineplot(df_truncated.index.astype(dtype = 'float64'), df_truncated[col])
             
             # top left
             slide.placeholders[22].insert_picture('scatterplot.png')

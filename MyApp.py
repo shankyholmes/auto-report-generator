@@ -19,6 +19,9 @@ class MyFrame(wx.Frame):
         
         self.Bind(wx.EVT_BUTTON, self.SelectDatFile, self.datSelect)
         self.Bind(wx.EVT_BUTTON, self.GenerateReport, self.datSelect_copy)
+        self.dirname = None
+        self.fileDir = None
+        self.datafiltered = None
         # end wxGlade
     
     def __set_properties(self):
@@ -68,27 +71,26 @@ class MyFrame(wx.Frame):
         dlg = wx.FileDialog(None, 'Select a .Dat file', '', '', '*.*', wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             filename = dlg.GetFilename()
-            global dirname
-            dirname = dlg.GetDirectory()
-            global fileDir
-            fileDir = os.path.join(dirname, filename)
+            self.dirname = dlg.GetDirectory()
+            self.fileDir = os.path.join(self.dirname, filename)
+            print(self.fileDir)
             dlg.Destroy()
         else:
             event.Skip()
     
     def GenerateReport(self, event):  # wxGlade: MyFrame.<event_handler>
         savelocation = wx.SaveFileSelector('Report', '.pptx', 'Report.pptx')
-        # print(savelocation)
+        print(savelocation)
         try:
-            global datafiltered
-            datafiltered = mdf.filtered_data(fileDir)
-            datafiltered.to_csv(os.path.join(dirname, 'sortedList.csv'))
-            # print(dirname)
+            self.datafiltered = mdf.filtered_data(self.fileDir)
+            print(self.datafiltered)
+            # datafiltered.to_csv(os.path.join(dirname, 'sortedList.csv'))
+            # print(self.dirname)
         except:
             print('Select correct file')
         
         try:
-            rp = reportGen(datafiltered, 'IQR', savelocation)
+            rp = reportGen(self.datafiltered, 'IQR', savelocation)
             rp.pptGenerator()
             print('Successful!')
         except:

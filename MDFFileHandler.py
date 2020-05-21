@@ -3,6 +3,7 @@ import os
 from asammdf import MDF
 import pandas as pd
 from fuzzywuzzy import process
+import numpy as np
 
 
 def csv_reader():
@@ -14,7 +15,7 @@ def csv_reader():
 
 def dat_reader(fileDir):
     file = fileDir
-    #file = 'D:\Designing\Programming\PyCharm\MachineLearning\Test.dat'
+    # file = 'D:\Designing\Programming\PyCharm\MachineLearning\Test.dat'
     mdf_df = MDF(file)
     return mdf_df
 
@@ -26,10 +27,21 @@ def filtered_data(fileDir):
     df = pd.DataFrame()
     
     for col in csvLST:
-            best_match = process.extractOne(col, columns)
-            best_match_col = best_match[0]
-            df = df.append(datDF[best_match_col])
+        best_match = process.extractOne(col, columns)
+        best_match_col = best_match[0]
+        df = df.append(datDF[best_match_col])
     df = df.transpose()
-    return df
+    
+    df_index = pd.date_range('1/1/2020', periods = len(df), freq = 'T', name = 'DateTimeIndex')
+    df.set_index(df_index, False, inplace = True)
+    df_resampled = df.resample('10T').asfreq()
+    df_new_index = np.arange(0, len(df_resampled) / 10, 0.1)
+    # print(df_new_index)
+    # df_new_index = pd.period_range('1/1/2020', periods = len(df_resampled), freq = '0.1S', name = 'index')
+    df_resampled.set_index(df_new_index, False, inplace = True)
+    # print(df_resampled)
+    return df_resampled
 
 
+# fileDir = 'D:\Designing\Programming\PyCharm\MachineLearning\Test.dat'
+# df = filtered_data(fileDir)
